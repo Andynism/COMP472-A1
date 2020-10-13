@@ -7,8 +7,6 @@ from sklearn.naive_bayes import GaussianNB
 from common import confusion_matrix
 from common import fileutils
 
-dirname = os.path.dirname(__file__)
-
 def predict_gnb(input_data, validation_data, test_data, filename, confusion_matrix):
     inputX = input_data.iloc[:,0:1024] # Binary features (first 1024 columns)
     inputY = input_data.iloc[:,1024] # Index representing the class (last column)
