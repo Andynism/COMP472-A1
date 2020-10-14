@@ -6,8 +6,9 @@ from sklearn.naive_bayes import GaussianNB
 
 from common import confusion_matrix
 from common import fileutils
+from common import metrics
 
-def predict_gnb(input_data, validation_data, test_data, filename, confusion_matrix):
+def predict_gnb(input_data, validation_data, test_data, filename):
     inputX = input_data.iloc[:,0:1024] # Binary features (first 1024 columns)
     inputY = input_data.iloc[:,1024] # Index representing the class (last column)
 
@@ -19,7 +20,7 @@ def predict_gnb(input_data, validation_data, test_data, filename, confusion_matr
     validX = validation_data.iloc[:, 0:1024]
     validY = validation_data.iloc[:,1024]
     score = gnb.score(validX, validY)
-    print(score)
+    print(f'Score: {score}')
 
     # Predict using the test data
     testX = test_data.iloc[:,0:1024]
@@ -31,16 +32,24 @@ def predict_gnb(input_data, validation_data, test_data, filename, confusion_matr
     output_df.transpose()
     fileutils.write_output(filename, output_df)
 
-    # Create the confusion matrix
-    confusion_matrix(predictions, testY)
+    return predictions, testY
 
+print("===Data Set 1===")
 input1 = fileutils.load_csv("train_1")
 valid1 = fileutils.load_csv("val_1")
 test1 = fileutils.load_csv("test_with_label_1")
-predict_gnb(input1, valid1, test1, "GNB-DS1", confusion_matrix.create_alphabet)
 
+test_predictions1, test_correct1 = predict_gnb(input1, valid1, test1, "GNB-DS1")
+
+confusion_matrix.create_alphabet(test_predictions1, test_correct1)
+metrics.compute(test_predictions1, test_correct1, 26)
+
+print("===Data Set 2===")
 input2 = fileutils.load_csv("train_2")
 valid2 = fileutils.load_csv("val_2")
 test2 = fileutils.load_csv("test_with_label_2")
-predict_gnb(input2, valid2, test2, "GNB-DS2", confusion_matrix.create_greek)
 
+test_predictions2, test_correct2 = predict_gnb(input2, valid2, test2, "GNB-DS2")
+
+confusion_matrix.create_greek(test_predictions2, test_correct2)
+metrics.compute(test_predictions2, test_correct2, 10)
