@@ -43,7 +43,6 @@ def compute(test_predictions, test_correct, alphabet_size):
     total_instances = count_correct + count_incorrect
     accuracy = count_correct / total_instances
 
-
     weighted_average_f1 = 0
     macro_average_f1 = 0
     
