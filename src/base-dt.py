@@ -1,6 +1,5 @@
 import os
 
-import numpy
 import pandas as pd
 from sklearn import tree
 
