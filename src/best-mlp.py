@@ -28,11 +28,11 @@ def predict_best_mlp(input_data, validation_data, test_data, filename):
     inputX = input_data.iloc[:,0:1024] # Binary features (first 1024 columns)
     inputY = input_data.iloc[:,1024] # Index representing the class (last column)
 
-    # Create a decision tree fit using the training data
+    # Create a mlp fit using the training data
     basemlp = MLPClassifier(**best_mlp_params(input_data))
     basemlp.fit(inputX, inputY)
 
-    # Validate decision tree. But we aren't calibrating any parameters so this is optional.
+    # Validate the mlp.
     validX = validation_data.iloc[:, 0:1024]
     validY = validation_data.iloc[:,1024]
     score = basemlp.score(validX, validY)
