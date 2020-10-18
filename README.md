@@ -7,3 +7,16 @@ https://github.com/Andynism/COMP472-A1
 - [Mike Brichko](https://github.com/MikeBrichko)
 
 ## Instructions
+
+1. Make sure you have these installed by running ```pip install```
+- sklearn
+- pandas
+- matplotlib
+
+2. Run any of the following models in the IDE of your choice:
+- gnb.py
+- base-dt.py
+- best-dt.py
+- perceptron.py
+- base-mlp.py
+- best-mlp.py
