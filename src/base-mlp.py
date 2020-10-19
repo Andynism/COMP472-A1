@@ -13,7 +13,7 @@ def predict_base_mlp(input_data, validation_data, test_data, filename):
     inputY = input_data.iloc[:,1024] # Index representing the class (last column)
 
     # Create a decision tree fit using the training data
-    basemlp = MLPClassifier(100,activation='logistic', solver='sgd', max_iter=100)
+    basemlp = MLPClassifier(100,activation='logistic', solver='sgd')
     basemlp.fit(inputX, inputY)
 
     # Validate decision tree. But we aren't calibrating any parameters so this is optional.
