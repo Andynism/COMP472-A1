@@ -23,7 +23,7 @@ def compute(test_predictions, test_correct, alphabet, filename):
         writer.writerow(['Recall'])
         print_metric(writer, alphabet, metrics[1])
         writer.writerow([])
-        writer.writerow(['F-Measure'])
+        writer.writerow(['F1-Measure'])
         print_metric(writer, alphabet, metrics[2])
         writer.writerow([])
         writer.writerow(['Occurence Count'])

@@ -1,38 +1,33 @@
 from matplotlib import pyplot
+from sklearn.metrics import confusion_matrix
+import os
+import csv
+dirname = os.path.dirname(__file__)
 
-def create_alphabet(test_predictions, test_correct):
-    # Generate headers for x and y columns
-    def index_to_char(index):
-        return str(chr(ord('A') + index))
+def create(test_predictions, test_correct, headers, filename):
+    confusion = confusion_matrix(test_correct, test_predictions)
 
-    headers = list(map(index_to_char,range(0,26)))
-    headers.extend(["="])
+    # Print the confusion matrix
+    with open(dirname + f'/../../output/{filename}.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([])
+        writer.writerow(["Confusion Matrix"])
+        writer.writerows(confusion)
 
-    create(test_predictions, test_correct, headers)
+            
 
-def create_greek(test_predictions, test_correct):
-    # Generate headers for x and y columns
-    alphabet = { 0: "π", 1: "α", 2: "β", 3: "σ", 4: "γ", 5: "δ", 6: "λ", 7: "ω", 8: "μ", 9: "ξ"}
 
-    def index_to_char(index):
-        return alphabet.get(index)
-
-    headers = list(map(index_to_char, range(0,10)))
-    headers.extend(["="])
-
-    create(test_predictions, test_correct, headers)
-
-def create(test_predictions, test_correct, headers):
     # Count occurrences to fill out values of the matrix
+    headers.extend(["="])
     headers_length = len(headers)
     alphabet_length = headers_length - 1
-
+    
     values = [[0 for x in range(headers_length)] for y in range(headers_length)]
 
-    for i in range(0, len(test_predictions)):
-        correct = test_correct[i]
-        predicted = test_predictions[i]
-        values[predicted][correct] += 1
+    for i in range(len(confusion)):
+        for j in range(len(confusion[i])):
+            #Transpose here so that we have correct as the x axis and predictions as the y axis
+            values[i][j] = confusion[j][i]
 
     # Sum up totals for rows and columns
     total = 0

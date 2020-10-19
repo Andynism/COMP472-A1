@@ -41,7 +41,7 @@ test1 = fileutils.load_csv("test_with_label_1")
 
 test_predictions1, test_correct1 = predict_gnb(input1, valid1, test1, "GNB-DS1")
 
-confusion_matrix.create(test_predictions1, test_correct1, alphabet.latin())
+confusion_matrix.create(test_predictions1, test_correct1, alphabet.latin(), "GNB-DS1")
 metrics.compute(test_predictions1, test_correct1, alphabet.latin(), "GNB-DS1")
 
 print("===GNB Data Set 2===")
@@ -51,5 +51,5 @@ test2 = fileutils.load_csv("test_with_label_2")
 
 test_predictions2, test_correct2 = predict_gnb(input2, valid2, test2, "GNB-DS2")
 
-confusion_matrix.create(test_predictions2, test_correct2, alphabet.greek())
+confusion_matrix.create(test_predictions2, test_correct2, alphabet.greek(), "GNB-DS2")
 metrics.compute(test_predictions2, test_correct2, alphabet.greek_no_unicode(), "GNB-DS2")
