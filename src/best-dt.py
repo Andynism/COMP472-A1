@@ -16,13 +16,14 @@ def predict_best_dt(input_data, validation_data, test_data, filename):
     grid_parameters = {
         'criterion': ['gini', 'entropy'],
         'max_depth': [None, 10],
-        'min_samples_split': [0.01, 0.1, 0.5, 1.0],
-        'min_impurity_decrease': [0.0, 0.1, 0.2, 0.5, 1.0],
+        'min_samples_split': [2, 3, 5, 10],
+        'min_impurity_decrease': [0.0, 0.1, 0.5, 1.0],
         'class_weight': [None, 'balanced']
     }
 
-    bestdt = GridSearchCV(DecisionTreeClassifier(), grid_parameters, verbose=3)
+    bestdt = GridSearchCV(DecisionTreeClassifier(), grid_parameters, verbose=0)
     bestdt.fit(inputX, inputY)
+    print(f'Best parameters: {bestdt.best_params_}')
 
     # Validate decision tree
     validX = validation_data.iloc[:, 0:1024]
