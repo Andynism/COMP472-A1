@@ -1,57 +1,34 @@
-def compute(test_predictions, test_correct, alphabet_size):
-    # Count true positives, false positives, false negatives
-    true_positives = [0 for x in range(alphabet_size)]
-    false_positives = [0 for x in range(alphabet_size)]
-    false_negatives = [0 for x in range(alphabet_size)]
-    class_count = [0 for x in range(alphabet_size)]
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score, f1_score
+import csv;
+import os;
 
-    count_correct = 0
-    count_incorrect = 0
+dirname = os.path.dirname(__file__)
 
-    for i in range(len(test_predictions)):
-        prediction = test_predictions[i]
-        correct = test_correct[i]
+def print_metric(writer, classes, metrics):
+    for i in range(len(classes)):
+        writer.writerow([classes[i], metrics[i]])
 
-        class_count[correct] += 1 
+def compute(test_predictions, test_correct, alphabet, filename):
+    metrics = precision_recall_fscore_support(test_correct, test_predictions, average=None, zero_division=0)
+    accuracy = accuracy_score(test_correct, test_predictions)
+    f1_macro = f1_score(test_correct, test_predictions, average='macro')
+    f1_weighted = f1_score(test_correct, test_predictions, average='weighted')
 
-        if(correct == prediction):
-            count_correct += 1
-            true_positives[prediction] += 1
-        else:
-            count_incorrect += 1
-            false_positives[prediction] += 1
-            false_negatives[correct] += 1
-
-
-
-    # Precision, Recall, F1 measure for each class
-    precision = [0 for x in range(alphabet_size)]
-    recall = [0 for x in range(alphabet_size)]
-    f1_measure = [0 for x in range(alphabet_size)]
-
-    for i in range(alphabet_size):
-        if(true_positives[i] + false_positives[i] != 0):
-            precision[i] = true_positives[i] / (true_positives[i] + false_positives[i])
-        
-        if(true_positives[i] + false_negatives[i] != 0):
-            recall[i] = true_positives[i] / (true_positives[i] + false_negatives[i])
-        
-        if(precision[i] + recall[i] != 0):
-            f1_measure[i] = 2 * precision[i] * recall[i] / (precision[i] + recall[i])
-    
-    # Accuracy, macro-average F1 and weighted-average F1 of the whole model
-    total_instances = count_correct + count_incorrect
-    accuracy = count_correct / total_instances
-
-    weighted_average_f1 = 0
-    macro_average_f1 = 0
-    
-    for i in range(alphabet_size):
-        macro_average_f1 += f1_measure[i]
-        weighted_average_f1 += f1_measure[i] * class_count[i] / total_instances
-
-    macro_average_f1 /= alphabet_size
-
-    print(f'Accuracy: {accuracy}')
-    print(f'Macro average f1: {macro_average_f1}')
-    print(f'Weighted average f1: {weighted_average_f1}')
+    with open(dirname + f'/../../output/{filename}.csv', 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([])
+        writer.writerow(['Precision'])
+        print_metric(writer, alphabet, metrics[0])
+        writer.writerow([])
+        writer.writerow(['Recall'])
+        print_metric(writer, alphabet, metrics[1])
+        writer.writerow([])
+        writer.writerow(['F1-Measure'])
+        print_metric(writer, alphabet, metrics[2])
+        writer.writerow([])
+        writer.writerow(['Occurence Count'])
+        print_metric(writer, alphabet, metrics[3])
+        writer.writerow([])
+        writer.writerow(['Accuracy', accuracy])
+        writer.writerow(['Macro F1-Measure', f1_macro])
+        writer.writerow(['Weighted F1-Measure', f1_weighted])
