@@ -8,7 +8,7 @@ https://github.com/Andynism/COMP472-A1
 
 ## Instructions
 
-1. Make sure you have these installed by running ```pip install```
+1. Make sure you have these installed by running ```pip install <dependency>```
 - sklearn
 - pandas
 - matplotlib
