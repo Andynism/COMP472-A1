@@ -13,10 +13,14 @@ https://github.com/Andynism/COMP472-A1
 - pandas
 - matplotlib
 
-2. Run any of the following models in the IDE of your choice:
+2. Place the sample datasets in the datasets folder
+
+3. Use the command `python src/<filename>` to run one of the models. Possible filenames are:
 - gnb.py
 - base-dt.py
 - best-dt.py
 - perceptron.py
 - base-mlp.py
 - best-mlp.py
+
+4. View the output file in the output folder
